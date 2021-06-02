@@ -1,11 +1,10 @@
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 import hellojpa.Member;
+import hellojpa.RoleType;
 
 public class JpaMain {
 	public static void main(String[] args) {
@@ -16,16 +15,12 @@ public class JpaMain {
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
 		try {
-			Member findMember = em.find(Member.class, 1L);
-			findMember.setName("HelloJPA");
+			Member member = new Member();
+			// member.setId(1L);
+			member.setUsername("A");
+			member.setRoleType(RoleType.USER);
+			em.persist(member);
 
-			List<Member> resultList = em.createQuery("select m from Member m where m.name like :name", Member.class)
-				.setParameter("name", "HelloJPA")
-				.getResultList();
-
-			for (Member mem : resultList) {
-				System.out.println(mem.getId() + " " + mem.getName());
-			}
 			tx.commit();
 		} catch (Exception e) {
 			tx.rollback();
